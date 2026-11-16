@@ -3,66 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Панель управления приглашением</title>
+    <title>Панель управления</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-slate-900 text-white min-h-screen flex items-center justify-center p-4">
-    <div class="bg-slate-800 p-8 rounded-2xl shadow-xl w-full max-w-md">
-        <h1 class="text-2xl font-bold mb-6 text-pink-400">⚙️ Настройка приглашения</h1>
+<body class="bg-slate-900 text-slate-100 min-h-screen py-8 px-4 flex justify-center">
+    <div class="w-full max-w-xl bg-slate-800 rounded-2xl p-6 shadow-2xl border border-slate-700">
+        <h1 class="text-2xl font-bold text-pink-400 mb-6 text-center">⚙️ Редактор приглашения</h1>
         
         <form id="admin-form" class="space-y-4">
             <div>
-                <label class="block text-sm font-medium mb-1">Главный заголовок</label>
-                <input type="text" id="title" class="w-full bg-slate-700 border border-slate-600 rounded-lg p-2.5 text-white focus:outline-none focus:border-pink-500">
+                <label class="block text-sm font-semibold mb-1 text-slate-300">Заголовок на обложке</label>
+                <input type="text" id="title" class="w-full bg-slate-700 border border-slate-600 rounded-lg p-2.5 text-white focus:ring-2 focus:ring-pink-500 outline-none">
             </div>
 
             <div>
-                <label class="block text-sm font-medium mb-1">Подзаголовок / Текст</label>
-                <textarea id="subtitle" rows="3" class="w-full bg-slate-700 border border-slate-600 rounded-lg p-2.5 text-white focus:outline-none focus:border-pink-500"></textarea>
+                <label class="block text-sm font-semibold mb-1 text-slate-300">Текст на первой открытке</label>
+                <textarea id="introText" rows="2" class="w-full bg-slate-700 border border-slate-600 rounded-lg p-2.5 text-white focus:ring-2 focus:ring-pink-500 outline-none"></textarea>
+            </div>
+
+            <div class="border-t border-slate-700 pt-4">
+                <label class="block text-sm font-semibold mb-1 text-slate-300">Дата и время встречи</label>
+                <input type="datetime-local" id="date" class="w-full bg-slate-700 border border-slate-600 rounded-lg p-2.5 text-white focus:ring-2 focus:ring-pink-500 outline-none">
             </div>
 
             <div>
-                <label class="block text-sm font-medium mb-1">Дата и время встречи</label>
-                <input type="datetime-local" id="date" class="w-full bg-slate-700 border border-slate-600 rounded-lg p-2.5 text-white focus:outline-none focus:border-pink-500">
+                <label class="block text-sm font-semibold mb-1 text-slate-300">Место проведения</label>
+                <input type="text" id="location" class="w-full bg-slate-700 border border-slate-600 rounded-lg p-2.5 text-white focus:ring-2 focus:ring-pink-500 outline-none">
             </div>
 
             <div>
-                <label class="block text-sm font-medium mb-1">Место проведения</label>
-                <input type="text" id="location" class="w-full bg-slate-700 border border-slate-600 rounded-lg p-2.5 text-white focus:outline-none focus:border-pink-500">
+                <label class="block text-sm font-semibold mb-1 text-slate-300">Дресс-код</label>
+                <input type="text" id="dressCode" class="w-full bg-slate-700 border border-slate-600 rounded-lg p-2.5 text-white focus:ring-2 focus:ring-pink-500 outline-none">
             </div>
 
-            <button type="submit" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-medium py-2.5 rounded-lg transition-all shadow-lg shadow-pink-600/30">
-                Сохранить изменения
+            <button type="submit" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-pink-600/30 mt-6">
+                💾 Сохранить изменения
             </button>
         </form>
 
-        <div id="status" class="mt-4 text-center text-sm text-green-400 hidden">Сохранено успешно! ✨</div>
-        
+        <div id="status" class="mt-4 text-center font-medium text-emerald-400 hidden">
+            ✨ Настройки успешно сохранены!
+        </div>
+
         <div class="mt-6 pt-4 border-t border-slate-700 text-center">
-            <a href="index.html" target="_blank" class="text-pink-400 hover:underline text-sm">Открыть сайт-приглашение →</a>
+            <a href="index.html" target="_blank" class="text-pink-400 hover:underline text-sm font-medium">
+                Перейти к сайту-приглашению →
+            </a>
         </div>
     </div>
 
     <script src="config.js"></script>
     <script>
-        // Заполняем форму текущими данными при загрузке
         const config = getConfig();
         document.getElementById('title').value = config.title;
-        document.getElementById('subtitle').value = config.subtitle;
+        document.getElementById('introText').value = config.introText;
         document.getElementById('date').value = config.date;
         document.getElementById('location').value = config.location;
+        document.getElementById('dressCode').value = config.dressCode;
 
-        // Сохранение при отправке формы
         document.getElementById('admin-form').addEventListener('submit', (e) => {
             e.preventDefault();
-            
             const newConfig = {
+                ...config,
                 title: document.getElementById('title').value,
-                subtitle: document.getElementById('subtitle').value,
+                introText: document.getElementById('introText').value,
                 date: document.getElementById('date').value,
-                location: document.getElementById('location').value
+                location: document.getElementById('location').value,
+                dressCode: document.getElementById('dressCode').value
             };
-
             localStorage.setItem('inviteConfig', JSON.stringify(newConfig));
             
             const status = document.getElementById('status');
