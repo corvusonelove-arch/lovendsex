@@ -35,7 +35,25 @@
             }
         }
     </script>
+<script src="config.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const config = getConfig();
+        
+        // Подставляем данные на страницу (убедитесь, что у ваших элементов есть нужные id)
+        const titleEl = document.getElementById('invite-title');
+        if (titleEl) titleEl.innerText = config.title;
 
+        const subEl = document.getElementById('invite-subtitle');
+        if (subEl) subEl.innerText = config.subtitle;
+
+        const locEl = document.getElementById('invite-location');
+        if (locEl) locEl.innerText = config.location;
+
+        // Если у вас настроен таймер обратного отсчета, передаем config.date в него
+        window.targetDate = config.date;
+    });
+</script>
     <style>
         body {
             background-color: #FDFBF7;
